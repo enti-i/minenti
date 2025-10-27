@@ -68,6 +68,8 @@ AppDir
 /sounds
 /mods/*
 !/mods/mods_here.txt
+!/mods/minenti_features/
+!/mods/minenti_features/**
 /worlds/*
 !/worlds/worlds_here.txt
 /clientmods/*
