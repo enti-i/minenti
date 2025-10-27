@@ -1,4 +1,4 @@
-// Luanti
+// Minenti
 // SPDX-License-Identifier: LGPL-2.1-or-later
 // Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
@@ -50,7 +50,7 @@ extern "C" {
 }
 
 #if !defined(__cpp_rtti) || !defined(__cpp_exceptions)
-#error Luanti cannot be built without exceptions or RTTI
+#error Minenti cannot be built without exceptions or RTTI
 #endif
 
 #if defined(__MINGW32__) && !defined(__clang__)
@@ -58,12 +58,12 @@ extern "C" {
 // <https://github.com/luanti-org/luanti/issues/10137> for some of the issues we had
 #error ==================================
 #error MinGW gcc has a broken TLS implementation and is not supported for building \
-	Luanti. Look at testTLS() in test_threading.cpp and see for yourself. \
+	Minenti. Look at testTLS() in test_threading.cpp and see for yourself. \
 	Please use a clang-based compiler or alternatively MSVC.
 #error ==================================
 #endif
 
-// TODO: luanti.conf with migration
+// TODO: minenti.conf with migration
 #define CONFIGFILE "minetest.conf"
 #define DEBUGFILE "debug.txt"
 #define DEFAULT_SERVER_PORT 30000

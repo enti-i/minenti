@@ -440,15 +440,19 @@ bool setSystemPaths()
 		path_share += DIR_DELIM "..";
 	}
 
-	// Use %MINETEST_USER_PATH%
-	DWORD len = GetEnvironmentVariable("MINETEST_USER_PATH", buf, sizeof(buf));
-	FATAL_ERROR_IF(len > sizeof(buf), "Failed to get MINETEST_USER_PATH (too large for buffer)");
+	// Use %MINENTI_USER_PATH% (fallback to legacy %MINETEST_USER_PATH%)
+	DWORD len = GetEnvironmentVariable("MINENTI_USER_PATH", buf, sizeof(buf));
+	FATAL_ERROR_IF(len > sizeof(buf), "Failed to get MINENTI_USER_PATH (too large for buffer)");
+	if (len == 0) {
+		len = GetEnvironmentVariable("MINETEST_USER_PATH", buf, sizeof(buf));
+		FATAL_ERROR_IF(len > sizeof(buf), "Failed to get MINETEST_USER_PATH (too large for buffer)");
+	}
 	if (len == 0) {
 		// Use "C:\Users\<user>\AppData\Roaming\<PROJECT_NAME_C>"
 		len = GetEnvironmentVariable("APPDATA", buf, sizeof(buf));
 		FATAL_ERROR_IF(len == 0 || len > sizeof(buf), "Failed to get APPDATA");
-		// TODO: Luanti with migration
-		path_user = std::string(buf) + DIR_DELIM + "Minetest";
+		// TODO: Minenti with migration
+		path_user = std::string(buf) + DIR_DELIM + "Minenti";
 	} else {
 		path_user = std::string(buf);
 	}
@@ -509,13 +513,18 @@ bool setSystemPaths()
 		break;
 	}
 
-	const char *const minetest_user_path = getenv("MINETEST_USER_PATH");
-	if (minetest_user_path && minetest_user_path[0] != '\0') {
-		path_user = std::string(minetest_user_path);
+	const char *minenti_user_path = getenv("MINENTI_USER_PATH");
+	if (minenti_user_path && minenti_user_path[0] != '\0') {
+		path_user = std::string(minenti_user_path);
 	} else {
-		// TODO: luanti with migration
-		path_user = std::string(getHomeOrFail()) + DIR_DELIM "."
-			+ "minetest";
+		const char *minetest_user_path = getenv("MINETEST_USER_PATH");
+		if (minetest_user_path && minetest_user_path[0] != '\0') {
+			path_user = std::string(minetest_user_path);
+		} else {
+			// TODO: Minenti with migration
+			path_user = std::string(getHomeOrFail()) + DIR_DELIM "."
+				+ "minenti";
+		}
 	}
 
 	return true;
@@ -538,15 +547,21 @@ bool setSystemPaths()
 	}
 	CFRelease(resources_url);
 
-	const char *const minetest_user_path = getenv("MINETEST_USER_PATH");
-	if (minetest_user_path && minetest_user_path[0] != '\0') {
-		path_user = std::string(minetest_user_path);
+	const char *minenti_user_path = getenv("MINENTI_USER_PATH");
+	if (minenti_user_path && minenti_user_path[0] != '\0') {
+		path_user = std::string(minenti_user_path);
 	} else {
-		// TODO: luanti with migration
-		path_user = std::string(getHomeOrFail())
-			+ "/Library/Application Support/"
-			+ "minetest";
+		const char *minetest_user_path = getenv("MINETEST_USER_PATH");
+		if (minetest_user_path && minetest_user_path[0] != '\0') {
+			path_user = std::string(minetest_user_path);
+		} else {
+			// TODO: Minenti with migration
+			path_user = std::string(getHomeOrFail())
+				+ "/Library/Application Support/"
+				+ "Minenti";
+		}
 	}
+
 	return true;
 }
 
@@ -556,14 +571,20 @@ bool setSystemPaths()
 bool setSystemPaths()
 {
 	path_share = STATIC_SHAREDIR;
-	const char *const minetest_user_path = getenv("MINETEST_USER_PATH");
-	if (minetest_user_path && minetest_user_path[0] != '\0') {
-		path_user = std::string(minetest_user_path);
+	const char *minenti_user_path = getenv("MINENTI_USER_PATH");
+	if (minenti_user_path && minenti_user_path[0] != '\0') {
+		path_user = std::string(minenti_user_path);
 	} else {
-		// TODO: luanti with migration
-		path_user  = std::string(getHomeOrFail()) + DIR_DELIM "."
-			+ "minetest";
+		const char *minetest_user_path = getenv("MINETEST_USER_PATH");
+		if (minetest_user_path && minetest_user_path[0] != '\0') {
+			path_user = std::string(minetest_user_path);
+		} else {
+			// TODO: Minenti with migration
+			path_user  = std::string(getHomeOrFail()) + DIR_DELIM "."
+				+ "minenti";
+		}
 	}
+
 	return true;
 }
 
