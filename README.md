@@ -104,6 +104,7 @@ Paths
 Locations:
 
 * `bin`   - Compiled binaries
+* `dist`  - Placeholder for locally packaged executables you build yourself (binaries are ignored in source control)
 * `share` - Distributed read-only data
 * `user`  - User-created modifiable data
 
@@ -171,6 +172,7 @@ troubleshooting tips.
    # run without installing (run-in-place)
    ./build/bin/minenti
    ```
+
 
 ### Windows (MSVC)
 

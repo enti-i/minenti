@@ -77,6 +77,13 @@ AppDir
 /client/mod_storage/
 /mod_data
 
+## Locally packaged artifacts (documented only; binaries stay untracked)
+dist/*
+!dist/README.md
+!dist/linux-headless/
+dist/linux-headless/*
+!dist/linux-headless/README.md
+
 ## Configuration/log files
 minetest.conf
 debug.txt

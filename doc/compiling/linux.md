@@ -101,3 +101,22 @@ Run unit tests:
 - You can disable the client build by specifying `-DBUILD_CLIENT=FALSE`.
 - You can select between Release and Debug build by `-DCMAKE_BUILD_TYPE=<Debug or Release>`.
   - Debug build is slower, but gives much more useful output in a debugger.
+
+### Example: building the dedicated server only
+
+If you are working on a headless machine or do not have OpenGL development
+packages available, you can still produce the dedicated server binary.
+The following commands compile only the server components and skip the
+client entirely:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_CLIENT=FALSE -DBUILD_SERVER=TRUE
+cmake --build build -j$(nproc)
+```
+
+The resulting executable will be placed in `bin/luantiserver`, and a
+convenience symlink named `bin/minetestserver` is produced as well. This
+binary runs on GNU/Linux; producing a Windows `.exe` requires a MinGW or
+MSVC toolchain with OpenGL headers, which is outside the scope of the
+headless build described here.
