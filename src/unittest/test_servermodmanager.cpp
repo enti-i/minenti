@@ -1,4 +1,4 @@
-// Luanti
+// Minenti
 // SPDX-License-Identifier: LGPL-2.1-or-later
 // Copyright (C) 2018 nerzhul, Loic Blot <loic.blot@unix-experience.fr>
 
@@ -56,7 +56,7 @@ void TestServerModManager::runTests(IGameDef *gamedef)
 		ofs2 << "-- intentionally empty\n";
 	}
 
-	setenv("MINETEST_MOD_PATH", test_mods.c_str(), 1);
+	setenv("MINENTI_MOD_PATH", test_mods.c_str(), 1);
 
 	m_worlddir = getTestTempDirectory().append(DIR_DELIM "world");
 	fs::CreateDir(m_worlddir);
@@ -71,9 +71,9 @@ void TestServerModManager::runTests(IGameDef *gamedef)
 	TEST(testGetModNames);
 	TEST(testGetModMediaPathsWrongDir);
 	TEST(testGetModMediaPaths);
-	// TODO: test MINETEST_GAME_PATH
+	// TODO: test MINENTI_GAME_PATH
 
-	unsetenv("MINETEST_MOD_PATH");
+	unsetenv("MINENTI_MOD_PATH");
 }
 
 void TestServerModManager::testCreation()
@@ -114,7 +114,7 @@ void TestServerModManager::testGetMods()
 	UASSERTEQ(std::size_t, mods.size(), 35 + 1);
 
 	// Ensure we found basenodes mod (part of devtest)
-	// and test_mod (for testing MINETEST_MOD_PATH).
+	// and test_mod (for testing MINENTI_MOD_PATH).
 	bool default_found = false;
 	bool test_mod_found = false;
 	for (const auto &m : mods) {

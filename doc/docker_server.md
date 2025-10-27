@@ -1,6 +1,6 @@
 # Docker Server
 
-We provide Luanti server Docker images using the GitHub container registry.
+We provide Minenti server Docker images using the GitHub container registry.
 
 Images are built on each commit and available using the following tag scheme:
 
@@ -22,7 +22,7 @@ docker run ghcr.io/luanti-org/luanti:master
 To use it in a production environment, you should use volumes bound to the Docker host to persist data and modify the configuration:
 
 ```shell
-docker create -v /home/minetest/data/:/var/lib/minetest/ -v /home/minetest/conf/:/etc/minetest/ ghcr.io/luanti-org/luanti:master
+docker create -v /home/minenti/data/:/var/lib/minetest/ -v /home/minenti/conf/:/etc/minetest/ ghcr.io/luanti-org/luanti:master
 ```
 
 You may also want to use [Docker Compose](https://docs.docker.com/compose):
@@ -31,19 +31,19 @@ You may also want to use [Docker Compose](https://docs.docker.com/compose):
 ---
 version: "2"
 services:
-  minetest_server:
+  minenti_server:
     image: ghcr.io/luanti-org/luanti:master
     restart: always
     networks:
       - default
     volumes:
-      - /home/minetest/data/:/var/lib/minetest/
-      - /home/minetest/conf/:/etc/minetest/
+      - /home/minenti/data/:/var/lib/minetest/
+      - /home/minenti/conf/:/etc/minetest/
     ports:
       - "30000:30000/udp"
       - "127.0.0.1:30000:30000/tcp"
 ```
 
-Data will be written to `/home/minetest/data` on the host, and configuration will be read from `/home/minetest/conf/minetest.conf`.
+Data will be written to `/home/minenti/data` on the host, and configuration will be read from `/home/minenti/conf/minetest.conf`.
 
 **Note:** If you don't understand the previous commands please read the [official Docker documentation](https://docs.docker.com) before use.

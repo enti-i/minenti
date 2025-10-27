@@ -45,7 +45,6 @@ erle:
   misc/luanti-icon-24x24.png
   misc/luanti-icon.ico
   misc/luanti.svg
-  textures/base/pack/logo.png
 
 JRottm:
   textures/base/pack/player_marker.png

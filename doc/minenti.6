@@ -1,19 +1,19 @@
-.TH luanti 6 "2025-10-16" "" ""
+.TH minenti 6 "2025-10-16" "" ""
 
 .SH NAME
-luanti, luantiserver \- voxel game engine
+minenti, minentiserver \- voxel game engine
 
 .SH SYNOPSIS
-.B luanti
+.B minenti
 [\fB--server SERVER OPTIONS\fR | \fBCLIENT OPTIONS\fR]
 [\fBCOMMON OPTIONS\fR]
 
-.B luantiserver
+.B minentiserver
 [\fBSERVER OPTIONS\fR]
 [\fBCOMMON OPTIONS\fR]
 
 .SH DESCRIPTION
-.B Luanti (formerly Minetest) is a voxel game engine with easy modding and game creation.
+.B Minenti (formerly Luanti/Minetest) is a voxel game engine with easy modding and game creation.
 
 .SH COMMON OPTIONS
 .TP
@@ -114,20 +114,20 @@ Display an interactive terminal over ncurses during execution.
 
 .SH ENVIRONMENT VARIABLES
 .TP
-.B MINETEST_GAME_PATH
+.B MINENTI_GAME_PATH
 Colon delimited list of directories to search for games
 .TP
-.B MINETEST_MOD_PATH
+.B MINENTI_MOD_PATH
 Colon delimited list of directories to search for mods
 .TP
-.B MINETEST_USER_PATH
-Path to Luanti user data directory
+.B MINENTI_USER_PATH
+Path to Minenti user data directory (the legacy MINETEST_USER_PATH is still recognized)
 .TP
 .B LOG_TIMESTAMP
 Equivalent to \-\-log-timestamp
 
 .SH BUGS
-Please report all bugs at https://github.com/luanti-org/luanti/issues.
+Please report all bugs at https://github.com/minenti-org/minenti/issues.
 
 .SH AUTHORS
 .PP
@@ -137,4 +137,4 @@ This man page was originally written by
 Juhani Numminen <juhaninumminen0@gmail.com>.
 
 .SH WWW
-http://www.luanti.org/
+https://www.minenti.org/

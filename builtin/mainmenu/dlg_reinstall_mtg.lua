@@ -1,4 +1,4 @@
--- Luanti
+-- Minenti
 -- Copyright (C) 2023 Gregor Parzefall
 -- SPDX-License-Identifier: LGPL-2.1-or-later
 
@@ -54,10 +54,10 @@ end
 
 local function get_formspec(dialogdata)
 	local markup = table.concat({
-		"<big>", hgettext("Minetest Game is no longer installed by default"), "</big>\n",
-		hgettext("For a long time, Luanti shipped with a default game called \"Minetest Game\". " ..
-				"Since version 5.8.0, Luanti ships without a default game."), "\n",
-		hgettext("If you want to continue playing in your Minetest Game worlds, you need to reinstall Minetest Game."),
+		"<big>", hgettext("Minenti Game is no longer installed by default"), "</big>\n",
+		hgettext("For a long time, Minenti shipped with a default game called \"Minenti Game\". " ..
+				"Since version 5.8.0, Minenti ships without a default game."), "\n",
+		hgettext("If you want to continue playing in your Minenti Game worlds, you need to reinstall Minenti Game."),
 	})
 
 	return table.concat({
@@ -67,7 +67,7 @@ local function get_formspec(dialogdata)
 		"container[0.375,5.825]",
 		"style[dismiss;bgcolor=red]",
 		"button[0,0;4,0.8;dismiss;", fgettext("Dismiss"), "]",
-		"button[4.25,0;8,0.8;reinstall;", fgettext("Reinstall Minetest Game"), "]",
+		"button[4.25,0;8,0.8;reinstall;", fgettext("Reinstall Minenti Game"), "]",
 		"container_end[]",
 	})
 end
@@ -80,7 +80,7 @@ local function buttonhandler(this, fields)
 		-- again if downloading MTG fails for whatever reason.
 		this:delete()
 
-		local dlg = create_contentdb_dlg(nil, "minetest/minetest")
+		local dlg = create_contentdb_dlg(nil, "minenti/minenti")
 		dlg:set_parent(parent)
 		parent:hide()
 		dlg:show()
@@ -101,7 +101,7 @@ local function eventhandler(event)
 		return true
 	elseif event == "MenuQuit" then
 		-- Don't allow closing the dialog with ESC, but still allow exiting
-		-- Luanti
+		-- Minenti
 		core.close()
 		return true
 	end

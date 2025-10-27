@@ -45,8 +45,11 @@ return {
 	caption = fgettext("About"),
 
 	cbf_formspec = function(tabview, name, tabdata)
-		local logofile = defaulttexturedir .. "logo.png"
 		local version = core.get_version()
+		local brand = table.concat({
+			"<style size=28 font=mono color=#34d399>Minenti</style>",
+			"<style color=#94a3b8>Creative worlds. Endless possibilities.</style>",
+		}, "\n")
 
 		local hypertext = {
 			"<tag name=heading color=#ff0>",
@@ -82,15 +85,16 @@ return {
 
 		hypertext = table.concat(hypertext):sub(1, -2)
 
-		local fs = "image[1.5,0.6;2.5,2.5;" .. core.formspec_escape(logofile) .. "]" ..
+		local fs = "hypertext[0.8,0.5;4.3,2.1;brand;" ..
+				core.formspec_escape(brand) .. "]" ..
 			"style[label_button;border=false]" ..
 			"button[0.1,3.4;5.3,0.5;label_button;" ..
 			core.formspec_escape(version.project .. " " .. version.string) .. "]" ..
-			"button_url[1.5,4.1;2.5,0.8;homepage;luanti.org;https://www.luanti.org/]" ..
+			"button_url[1.5,4.1;2.5,0.8;homepage;minenti.org;https://www.minenti.org/]" ..
 			"hypertext[5.5,0.25;9.75,6.6;credits;" .. core.formspec_escape(hypertext) .. "]"
 
 		local active_renderer_info = fgettext("Active renderer:") .. "\n" ..
-			core.formspec_escape(get_renderer_info())
+				core.formspec_escape(get_renderer_info())
 		fs = fs .. "style[label_button2;border=false]" ..
 			"button[0.1,6;5.3,1;label_button2;" .. active_renderer_info .. "]"..
 			"tooltip[label_button2;" .. active_renderer_info .. "]"
@@ -99,13 +103,14 @@ return {
 			fs = fs .. "button[0.5,5.1;4.5,0.8;share_debug;" .. fgettext("Share debug log") .. "]"
 		else
 			fs = fs .. "tooltip[userdata;" ..
-					fgettext("Opens the directory that contains user-provided worlds, games, mods,\n" ..
-							"and texture packs in a file manager / explorer.") .. "]"
+								fgettext("Opens the directory that contains user-provided worlds, games, mods,\n" ..
+									"and texture packs in a file manager / explorer.") .. "]"
 			fs = fs .. "button[0.5,5.1;4.5,0.8;userdata;" .. fgettext("Open User Data Directory") .. "]"
 		end
 
 		return fs
 	end,
+
 
 	cbf_button_handler = function(this, fields, name, tabdata)
 		if fields.share_debug then

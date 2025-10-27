@@ -1,6 +1,6 @@
-// Luanti
+// Minenti
 // SPDX-License-Identifier: LGPL-2.1-or-later
-// Copyright (C) 2022 Minetest Authors
+// Copyright (C) 2022 Minenti Authors
 
 #include "benchmark/benchmark.h"
 
@@ -10,7 +10,7 @@
 bool run_benchmarks(const char *arg)
 {
 	const char *const argv[] = {
-		"MinetestBenchmark", arg, nullptr
+"MinentiBenchmark", arg, nullptr
 	};
 	const int argc = arg ? 2 : 1;
 	int errCount = Catch::Session().run(argc, argv);
