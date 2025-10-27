@@ -8,6 +8,11 @@
 <br>
 
 Minenti is a free open-source voxel game engine with easy modding and game creation.
+It is compatible with most Minetest content while adding its own curated
+experience, enhanced visual identity, and the new `minenti_features` gameplay
+module shipping 100 opt-in abilities ranging from traversal boosts to world
+scans. Whether you want to host a server, build games, or experiment with the
+engine, this repository contains everything you need.
 
 Copyright (C) 2010-2025 Perttu Ahola <celeron55@gmail.com>
 and contributors (see source file comments and the version control log)
@@ -15,14 +20,32 @@ and contributors (see source file comments and the version control log)
 Table of Contents
 ------------------
 
-1. [Further Documentation](#further-documentation)
-2. [Default Controls](#default-controls)
-3. [Paths](#paths)
-4. [Configuration File](#configuration-file)
-5. [Command-line Options](#command-line-options)
-6. [Compiling](#compiling)
-7. [Docker](#docker)
-8. [Version Scheme](#version-scheme)
+1. [Project Overview](#project-overview)
+2. [Further Documentation](#further-documentation)
+3. [Default Controls](#default-controls)
+4. [Paths](#paths)
+5. [Configuration File](#configuration-file)
+6. [Command-line Options](#command-line-options)
+7. [Compiling](#compiling)
+8. [Docker](#docker)
+9. [Version Scheme](#version-scheme)
+
+
+Project Overview
+----------------
+- **Engine & game platform**: Create your own worlds, extend the engine through
+  Lua mods, and host multiplayer experiences.
+- **Included content**: Ships with the `minenti_features` demo mod that
+  registers 100 player abilities you can enable via chat commands or reference
+  when building your own creations.
+- **Modding-first workflow**: Lua API compatibility makes it easy to reuse
+  Minetest community mods while layering new mechanics.
+- **Cross-platform**: Supports Linux, Windows, macOS, Android, and more through
+  the Irrlicht-based rendering stack.
+
+If you are looking for a curated gameplay showcase, load the
+`minenti_features` mod in your world and try `/minenti_features help` once in
+game to browse the available abilities.
 
 
 Further documentation
@@ -81,6 +104,7 @@ Paths
 Locations:
 
 * `bin`   - Compiled binaries
+* `dist`  - Placeholder for locally packaged executables you build yourself (binaries are ignored in source control)
 * `share` - Distributed read-only data
 * `user`  - User-created modifiable data
 
@@ -121,6 +145,77 @@ Command-line options
 
 Compiling
 ---------
+
+The project uses CMake and supports building as a run-in-place binary or an
+installed system package. The following instructions cover the most common
+platforms. Refer to the linked documentation for deeper customization or
+troubleshooting tips.
+
+### GNU/Linux
+
+1. Install the required build tools and dependencies (example for Debian/Ubuntu):
+   ```bash
+   sudo apt update
+   sudo apt install build-essential cmake libirrlicht-dev libbz2-dev \
+       libpng-dev libjpeg-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev \
+       libogg-dev libvorbis-dev libopenal-dev libcurl4-openssl-dev
+   ```
+2. Configure the project in a new build directory:
+   ```bash
+   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+   ```
+3. Compile and install/run:
+   ```bash
+   cmake --build build -j$(nproc)
+   # optional install
+   sudo cmake --install build
+   # run without installing (run-in-place)
+   ./build/bin/minenti
+   ```
+
+After compiling once, you can copy the resulting `bin/luantiserver` into
+`dist/linux-headless/` for convenience. The tree under `dist/` is intentionally
+empty in Git so contributors avoid checking in large binaries. See
+`dist/README.md` for packaging tips.
+
+### Windows (MSVC)
+
+1. Install the latest [Visual Studio](https://visualstudio.microsoft.com/) with
+   the "Desktop development with C++" workload.
+2. Install [vcpkg](https://github.com/microsoft/vcpkg) (already bundled in this
+   repository via `vcpkg.json`).
+3. Generate the Visual Studio solution using CMake (from a "Developer Command
+   Prompt for VS"):
+   ```cmd
+   cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "Visual Studio 17 2022"
+   ```
+4. Open `build/Minenti.sln` in Visual Studio and build the `minenti` target, or
+   compile via CLI:
+   ```cmd
+   cmake --build build --config RelWithDebInfo
+   ```
+5. Launch `build/bin/RelWithDebInfo/minenti.exe` (run-in-place) or install with
+   `cmake --install build --config RelWithDebInfo`.
+
+### macOS
+
+1. Install the Xcode Command Line Tools:
+   ```bash
+   xcode-select --install
+   ```
+2. Install dependencies via [Homebrew](https://brew.sh/):
+   ```bash
+   brew install cmake freetype gettext jpeg libogg libpng libvorbis openal-soft
+   ```
+3. Configure and build:
+   ```bash
+   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+   cmake --build build -j$(sysctl -n hw.ncpu)
+   ```
+4. Run from `build/bin/minenti` or install with `cmake --install build`.
+
+For additional options (Android builds, cross-compilation, packaging, etc.),
+consult:
 
 - [Compiling - common information](doc/compiling/README.md)
 - [Compiling on GNU/Linux](doc/compiling/linux.md)
