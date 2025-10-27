@@ -880,6 +880,10 @@ tooltip_append_itemname (Append item name) bool false
 #    Use a cloud animation for the main menu background.
 menu_clouds (Clouds in menu) bool true
 
+#    Enable the animated Minenti styling for the main menu tab view.
+#    Disable to return to the classic static appearance.
+main_menu_fancy_theme (Animated Minenti main menu) bool true
+
 [**HUD]
 
 #    Modifies the size of the HUD elements.

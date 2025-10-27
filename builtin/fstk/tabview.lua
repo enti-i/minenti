@@ -45,6 +45,76 @@ local function add_tab(self,tab)
 end
 
 --------------------------------------------------------------------------------
+local function build_default_theme(self, formspec, orig_tsize, tab_header_size, content)
+        formspec = formspec .. ("bgcolor[;neither]container[0,%f]box[0,0;%f,%f;#0000008C]"):format(
+                        TABHEADER_H, orig_tsize.width, orig_tsize.height)
+        formspec = formspec .. self:tab_header(tab_header_size) .. content
+        return formspec
+end
+
+local function build_minenti_theme(self, formspec, orig_tsize, tab_header_size, content)
+        local accent_spin = core.formspec_escape(defaulttexturedir ..
+                        "cdb_downloading.png^[multiply:#34d399^[opacity:200")
+        local accent_spark = core.formspec_escape(defaulttexturedir ..
+                        "cdb_downloading.png^[multiply:#38bdf8^[opacity:180")
+        local accent_glow = core.formspec_escape(defaulttexturedir ..
+                        "blank.png^[noalpha^[colorize:#34d399:52")
+        local accent_sheet = core.formspec_escape(defaulttexturedir ..
+                        "blank.png^[noalpha^[colorize:#0ea5e9:12")
+        local accent_grid = core.formspec_escape(defaulttexturedir ..
+                        "cdb_downloading.png^[multiply:#1f2937^[opacity:160^[resize:64x192^[multiply:#0ea5e9^[opacity:85")
+
+        local hero_y = TABHEADER_H - 0.45
+        local hero_height = math.min(3.2, orig_tsize.height + 0.35)
+        local hero_width = orig_tsize.width + 1.3
+        local hero_x = -0.65
+        local swirl_size = 3.25
+        local swirl_x = orig_tsize.width - swirl_size + 0.35
+        local swirl_y = hero_y - 0.4
+
+        local tagline_primary = fgettext_ne("Minenti – Creativity in every block")
+        local tagline_secondary = fgettext_ne("Build, explore, and share your own adventures.")
+        local tagline_markup = table.concat({
+                "<global font=bold size=24 color=#F8FAFC>", tagline_primary, "</global>",
+                "<newline/>",
+                "<global size=15 color=#94A3B8>", tagline_secondary, "</global>"
+        })
+
+        formspec = formspec .. "bgcolor[#0f172aff;fullscreen;#050a15ff]"
+        formspec = formspec .. "style_type[label;textcolor=#E2E8F0]"
+        formspec = formspec .. "style_type[checkbox;textcolor=#E2E8F0]"
+        formspec = formspec .. "style_type[textlist;textcolor=#E2E8F0]"
+        formspec = formspec .. "style_type[textlist:selected;textcolor=#0f172a;bgcolor=#34d399]"
+        formspec = formspec .. "style_type[tabheader;textcolor=#94A3B8;font=bold]"
+        formspec = formspec .. "style_type[tabheader:selected;textcolor=#0f172a;bgcolor=#38bdf8]"
+        formspec = formspec .. "style_type[button;bordercolor=#34d399;textcolor=#0f172a;bgcolor=#34d399]"
+        formspec = formspec .. "style_type[button:hovered;bgcolor=#22c55e;textcolor=#0f172a]"
+        formspec = formspec .. "style_type[button:pressed;bgcolor=#0ea5e9;textcolor=#0f172a]"
+        formspec = formspec .. "style_type[field;bordercolor=#34d399]"
+        formspec = formspec .. "style_type[field;textcolor=#0f172a]"
+        formspec = formspec .. "style_type[dropdown;textcolor=#0f172a;bordercolor=#34d399]"
+        formspec = formspec .. "style_type[scrollbar;thumbcolor=#38bdf8;bgcolor=#0f172a]"
+        formspec = formspec .. "listcolors[#cbd5f5;#111827;#34d399;#0f172a;#34d399]"
+
+        formspec = formspec .. ("box[%f,%f;%f,%f;#111827E6]"):format(hero_x, hero_y, hero_width, hero_height)
+        formspec = formspec .. ("image[%f,%f;%f,%f;%s]"):format(hero_x, hero_y, hero_width, hero_height, accent_sheet)
+        formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_grid;%s;3;175;0]"):format(
+                        hero_x, hero_y, hero_width, hero_height, accent_grid)
+        formspec = formspec .. ("image[%f,%f;%f,%f;%s]"):format(swirl_x, swirl_y, swirl_size, swirl_size, accent_glow)
+        formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_swirl;%s;3;200;0]"):format(
+                        swirl_x, swirl_y, swirl_size, swirl_size, accent_spin)
+        formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_spark;%s;3;150;0]"):format(
+                        hero_x + hero_width - 1.4, hero_y + 0.2, 1.1, 1.1, accent_spark)
+        formspec = formspec .. ("hypertext[0.5,%f;%f,1.8;minenti_tagline;%s]"):format(
+                        hero_y + 0.2, orig_tsize.width - swirl_size - 1.1, core.formspec_escape(tagline_markup))
+        formspec = formspec .. ("container[0,%f]box[0,0;%f,%f;#020617CC]"):format(
+                        TABHEADER_H, orig_tsize.width, orig_tsize.height)
+        formspec = formspec .. ("image[0,%f;%f,0.5;%s]"):format(
+                        TABHEADER_H - 0.5, orig_tsize.width, accent_sheet)
+        formspec = formspec .. self:tab_header(tab_header_size) .. content
+        return formspec
+end
+
 local function get_formspec(self)
 	if self.hidden or (self.parent ~= nil and self.parent.hidden) then
 		return ""
@@ -81,67 +151,13 @@ local function get_formspec(self)
 		tab_header_size.width = tab_header_size.width - end_button_size - 0.1
 	end
 
-	local formspec = (prepend or "")
+        local formspec = (prepend or "")
 
-        local accent_spin = core.formspec_escape(defaulttexturedir ..
-                "cdb_downloading.png^[multiply:#34d399^[opacity:200")
-        local accent_spark = core.formspec_escape(defaulttexturedir ..
-                "cdb_downloading.png^[multiply:#38bdf8^[opacity:180")
-        local accent_glow = core.formspec_escape(defaulttexturedir ..
-                "blank.png^[noalpha^[colorize:#34d399:52")
-        local accent_sheet = core.formspec_escape(defaulttexturedir ..
-                "blank.png^[noalpha^[colorize:#0ea5e9:12")
-        local accent_grid = core.formspec_escape(defaulttexturedir ..
-                "cdb_downloading.png^[multiply:#1f2937^[opacity:160^[resize:64x192^[multiply:#0ea5e9^[opacity:85")
-
-	local hero_y = TABHEADER_H - 0.45
-	local hero_height = math.min(3.2, orig_tsize.height + 0.35)
-	local hero_width = orig_tsize.width + 1.3
-	local hero_x = -0.65
-	local swirl_size = 3.25
-	local swirl_x = orig_tsize.width - swirl_size + 0.35
-	local swirl_y = hero_y - 0.4
-
-	local tagline_primary = fgettext_ne("Minenti – Creativity in every block")
-	local tagline_secondary = fgettext_ne("Build, explore, and share your own adventures.")
-	local tagline_markup = table.concat({
-		"<global font=bold size=24 color=#F8FAFC>", tagline_primary, "</global>",
-		"<newline/>",
-		"<global size=15 color=#94A3B8>", tagline_secondary, "</global>"
-	})
-
-	formspec = formspec .. "bgcolor[#0f172aff;fullscreen;#050a15ff]"
-        formspec = formspec .. "style_type[label;textcolor=#E2E8F0]"
-        formspec = formspec .. "style_type[checkbox;textcolor=#E2E8F0]"
-        formspec = formspec .. "style_type[textlist;textcolor=#E2E8F0]"
-        formspec = formspec .. "style_type[textlist:selected;textcolor=#0f172a;bgcolor=#34d399]"
-        formspec = formspec .. "style_type[tabheader;textcolor=#94A3B8;font=bold]"
-        formspec = formspec .. "style_type[tabheader:selected;textcolor=#0f172a;bgcolor=#38bdf8]"
-        formspec = formspec .. "style_type[button;bordercolor=#34d399;textcolor=#0f172a;bgcolor=#34d399]"
-        formspec = formspec .. "style_type[button:hovered;bgcolor=#22c55e;textcolor=#0f172a]"
-        formspec = formspec .. "style_type[button:pressed;bgcolor=#0ea5e9;textcolor=#0f172a]"
-        formspec = formspec .. "style_type[field;bordercolor=#34d399]"
-        formspec = formspec .. "style_type[field;textcolor=#0f172a]"
-        formspec = formspec .. "style_type[dropdown;textcolor=#0f172a;bordercolor=#34d399]"
-        formspec = formspec .. "style_type[scrollbar;thumbcolor=#38bdf8;bgcolor=#0f172a]"
-        formspec = formspec .. "listcolors[#cbd5f5;#111827;#34d399;#0f172a;#34d399]"
-
-        formspec = formspec .. ("box[%f,%f;%f,%f;#111827E6]"):format(hero_x, hero_y, hero_width, hero_height)
-        formspec = formspec .. ("image[%f,%f;%f,%f;%s]"):format(hero_x, hero_y, hero_width, hero_height, accent_sheet)
-        formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_grid;%s;3;175;0]"):format(
-                hero_x, hero_y, hero_width, hero_height, accent_grid)
-        formspec = formspec .. ("image[%f,%f;%f,%f;%s]"):format(swirl_x, swirl_y, swirl_size, swirl_size, accent_glow)
-        formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_swirl;%s;3;200;0]"):format(
-                swirl_x, swirl_y, swirl_size, swirl_size, accent_spin)
-        formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_spark;%s;3;150;0]"):format(
-                hero_x + hero_width - 1.4, hero_y + 0.2, 1.1, 1.1, accent_spark)
-        formspec = formspec .. ("hypertext[0.5,%f;%f,1.8;minenti_tagline;%s]"):format(
-                hero_y + 0.2, orig_tsize.width - swirl_size - 1.1, core.formspec_escape(tagline_markup))
-        formspec = formspec .. ("container[0,%f]box[0,0;%f,%f;#020617CC]"):format(
-                TABHEADER_H, orig_tsize.width, orig_tsize.height)
-        formspec = formspec .. ("image[0,%f;%f,0.5;%s]"):format(
-                TABHEADER_H - 0.5, orig_tsize.width, accent_sheet)
-        formspec = formspec .. self:tab_header(tab_header_size) .. content
+        if core.settings:get_bool("main_menu_fancy_theme", true) then
+                formspec = build_minenti_theme(self, formspec, orig_tsize, tab_header_size, content)
+        else
+                formspec = build_default_theme(self, formspec, orig_tsize, tab_header_size, content)
+        end
 
 	if self.end_button then
 		formspec = formspec ..
