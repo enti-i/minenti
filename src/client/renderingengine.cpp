@@ -3,6 +3,8 @@
 // Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 // Copyright (C) 2017 nerzhul, Loic Blot <loic.blot@unix-experience.fr>
 
+#include <algorithm>
+#include <array>
 #include <optional>
 #include <irrlicht.h>
 #include "IMeshCache.h"
@@ -23,6 +25,55 @@
 #include "filesys.h"
 #include "irrlicht_changes/static_text.h"
 #include "irr_ptr.h"
+
+namespace {
+
+	constexpr u32 ICON_SIZE = 32;
+
+	constexpr u32 argb(u32 a, u32 r, u32 g, u32 b)
+	{
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
+	const std::array<u32, ICON_SIZE * ICON_SIZE> &get_minenti_icon_pixels()
+	{
+		static const std::array<u32, ICON_SIZE * ICON_SIZE> pixels = [] {
+			std::array<u32, ICON_SIZE * ICON_SIZE> data{};
+			const u32 background = argb(0xFF, 0x0F, 0x17, 0x2A);
+			const u32 accent = argb(0xFF, 0x34, 0xD3, 0x99);
+			const u32 highlight = argb(0xFF, 0xF8, 0xFA, 0xFC);
+
+			std::fill(data.begin(), data.end(), background);
+			auto set_pixel = [&data](u32 x, u32 y, u32 color) {
+				if (x >= ICON_SIZE || y >= ICON_SIZE)
+					return;
+				data[y * ICON_SIZE + x] = color;
+			};
+
+			for (u32 y = 6; y < ICON_SIZE - 6; y++) {
+				set_pixel(6, y, accent);
+				set_pixel(7, y, accent);
+				set_pixel(ICON_SIZE - 7, y, accent);
+				set_pixel(ICON_SIZE - 6, y, accent);
+			}
+
+			for (u32 i = 0; i < 12; i++) {
+				u32 y = 6 + i;
+				set_pixel(8 + i, y, highlight);
+				set_pixel(9 + i, y, highlight);
+				set_pixel(ICON_SIZE - 10 - i, y, highlight);
+				set_pixel(ICON_SIZE - 9 - i, y, highlight);
+			}
+
+			return data;
+		}();
+
+		return pixels;
+	}
+
+} // namespace
+
+
 
 RenderingEngine *RenderingEngine::s_singleton = nullptr;
 const video::SColor RenderingEngine::MENU_SKY_COLOR = video::SColor(255, 140, 186, 250);
@@ -278,14 +329,18 @@ bool RenderingEngine::setupTopLevelWindow()
 
 bool RenderingEngine::setWindowIcon()
 {
-	irr_ptr<video::IImage> img(driver->createImageFromFile(
-			(porting::path_share + "/textures/base/pack/logo.png").c_str()));
+	const auto &pixels = get_minenti_icon_pixels();
+	const core::dimension2d<u32> size(ICON_SIZE, ICON_SIZE);
+	irr_ptr<video::IImage> img(driver->createImageFromData(
+			video::ECF_A8R8G8B8, size,
+			const_cast<u32 *>(pixels.data()), false));
 	if (!img) {
-		warningstream << "Could not load icon file." << std::endl;
+		warningstream << "Could not build Minenti window icon." << std::endl;
 		return false;
 	}
 
 	return m_device->setWindowIcon(img.get());
+
 }
 
 /*

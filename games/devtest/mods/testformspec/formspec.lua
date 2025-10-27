@@ -66,7 +66,7 @@ local inv_style_fs = [[
 
 -- Some textures from textures/base/pack and Devtest, with many different sizes
 -- and aspect ratios.
-local image_column = "image,0=logo.png,1=crack_anylength.png^[invert:rgb,2=checkbox_16.png," ..
+local image_column = "image,0=progress_bar_bg.png,1=crack_anylength.png^[invert:rgb,2=checkbox_16.png," ..
 		"3=checkbox_32.png,4=checkbox_64.png,5=default_lava.png," ..
 		"6=progress_bar.png,7=progress_bar_bg.png"
 local words = {
@@ -340,8 +340,8 @@ local pages = {
 		formspec_version[3]
 		size[12,13]
 		allow_close[false]
-		image_button[0,0;1,1;logo.png;rc_image_button_1x1;1x1]
-		image_button_exit[1,0;2,2;logo.png;rc_image_button_2x2;2x2 exit]
+		image_button[0,0;1,1;progress_bar.png;rc_image_button_1x1;1x1]
+		image_button_exit[1,0;2,2;progress_bar_bg.png;rc_image_button_2x2;2x2 exit]
 		button[0,2;1,1;rc_button_1x1;1x1]
 		button_exit[1,2;2,2;rc_button_2x2;2x2 exit]
 		item_image[0,4;1,1;air]

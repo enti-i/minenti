@@ -62,21 +62,27 @@ struct GameFindPath
 
 std::string getSubgamePathEnv()
 {
-	static bool has_warned = false;
-	char *subgame_path = getenv("MINETEST_SUBGAME_PATH");
-	if (subgame_path && !has_warned) {
-		warningstream << "MINETEST_SUBGAME_PATH is deprecated, use MINETEST_GAME_PATH instead."
-				<< std::endl;
-		has_warned = true;
-	}
+    static bool has_warned = false;
+    const char *legacy_subgame_path = getenv("MINETEST_SUBGAME_PATH");
+    if (legacy_subgame_path && !has_warned) {
+            warningstream << "MINETEST_SUBGAME_PATH is deprecated, use MINENTI_GAME_PATH instead."
+                            << std::endl;
+            has_warned = true;
+    }
 
-	char *game_path = getenv("MINETEST_GAME_PATH");
+    const char *minenti_game_path = getenv("MINENTI_GAME_PATH");
+    if (!minenti_game_path)
+            minenti_game_path = getenv("MINETEST_GAME_PATH");
 
-	if (game_path)
-		return std::string(game_path);
-	else if (subgame_path)
-		return std::string(subgame_path);
-	return "";
+    const char *minenti_subgame_path = getenv("MINENTI_SUBGAME_PATH");
+
+    if (minenti_game_path)
+            return std::string(minenti_game_path);
+    if (minenti_subgame_path)
+            return std::string(minenti_subgame_path);
+    if (legacy_subgame_path)
+            return std::string(legacy_subgame_path);
+    return "";
 }
 
 static SubgameSpec getSubgameSpec(const std::string &game_id,
@@ -411,7 +417,9 @@ void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
 
 std::vector<std::string> getEnvModPaths()
 {
-	const char *c_mod_path = getenv("MINETEST_MOD_PATH");
+    const char *c_mod_path = getenv("MINENTI_MOD_PATH");
+    if (!c_mod_path)
+            c_mod_path = getenv("MINETEST_MOD_PATH");
 	std::vector<std::string> paths;
 	Strfnd search_paths(c_mod_path ? c_mod_path : "");
 	while (!search_paths.at_end())

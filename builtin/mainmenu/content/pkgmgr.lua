@@ -1,4 +1,4 @@
--- Luanti
+-- Minenti
 -- Copyright (C) 2013 sapier
 -- SPDX-License-Identifier: LGPL-2.1-or-later
 
@@ -827,7 +827,7 @@ function pkgmgr.get_contentdb_id(content)
 		return content.author:lower() .. "/" .. content.name
 	end
 
-	-- Until version 5.8.0, Minetest Game was bundled with the engine.
+	-- Until version 5.8.0, Minenti Game was bundled with the engine.
 	-- Unfortunately, the bundled MTG was not versioned (missing "release"
 	-- field in game.conf).
 	-- Therefore, we consider any installation of MTG that is not versioned,
