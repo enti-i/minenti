@@ -173,10 +173,6 @@ troubleshooting tips.
    ./build/bin/minenti
    ```
 
-After compiling once, you can copy the resulting `bin/luantiserver` into
-`dist/linux-headless/` for convenience. The tree under `dist/` is intentionally
-empty in Git so contributors avoid checking in large binaries. See
-`dist/README.md` for packaging tips.
 
 ### Windows (MSVC)
 
