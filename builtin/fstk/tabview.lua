@@ -171,13 +171,9 @@ local function get_formspec(self)
 		tab_header_size.width = tab_header_size.width - end_button_size - 0.1
 	end
 
-        local formspec = (prepend or "")
+	local formspec = (prepend or "")
 
-        if core.settings:get_bool("main_menu_fancy_theme", true) then
-                formspec = build_minenti_theme(self, formspec, orig_tsize, tab_header_size, content)
-        else
-                formspec = build_default_theme(self, formspec, orig_tsize, tab_header_size, content)
-        end
+	formspec = build_minenti_theme(self, formspec, orig_tsize, tab_header_size, content)
 
 	if self.end_button then
 		formspec = formspec ..
