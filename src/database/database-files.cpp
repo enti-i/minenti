@@ -14,7 +14,7 @@
 #include <cassert>
 
 // !!! WARNING !!!
-// This backend is intended to be used on Minetest 0.4.16 only for the transition backend
+// This backend is intended to be used on Minenti 0.4.16 only for the transition backend
 // for player files
 
 PlayerDatabaseFiles::PlayerDatabaseFiles(const std::string &savedir) : m_savedir(savedir)

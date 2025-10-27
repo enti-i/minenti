@@ -5,7 +5,7 @@
 #pragma once
 
 // !!! WARNING !!!
-// This backend is intended to be used on Minetest 0.4.16 only for the transition backend
+// This backend is intended to be used on Minenti 0.4.16 only for the transition backend
 // for player files
 
 #include "database.h"

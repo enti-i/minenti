@@ -12,7 +12,24 @@
 
 It is highly recommended to use vcpkg as package manager.
 
-After you successfully built vcpkg you can easily install the required libraries:
+### Prepare vcpkg
+
+Clone the [vcpkg repository](https://github.com/microsoft/vcpkg) and open a
+Developer PowerShell inside the cloned folder. Run the bootstrap script once to
+compile the tool and register it for the current terminal session:
+
+```powershell
+git clone https://github.com/microsoft/vcpkg
+cd vcpkg
+.\bootstrap-vcpkg.bat
+```
+
+> **Tip:** If PowerShell reports that `vcpkg` is not recognized, make sure you
+> are executing the commands from the directory where you cloned vcpkg or add
+> that directory to your `PATH` environment variable.
+
+After you successfully built vcpkg you can easily install the required libraries
+from inside the vcpkg directory:
 ```powershell
 vcpkg install zlib zstd curl[ssl] openal-soft libvorbis libogg libjpeg-turbo sqlite3 freetype luajit gmp jsoncpp gettext[tools] sdl2 --triplet x64-windows
 ```
@@ -28,13 +45,13 @@ There are other optional libraries, but they are not tested if they can build an
 Use `--triplet` to specify the target triplet, e.g. `x64-windows` or `x86-windows`.
 
 
-## Compile Luanti
+## Compile Minenti
 
 ### a) Using the vcpkg toolchain and CMake GUI
 
 1. Start up the CMake GUI
-2. Select **Browse Source...** and select DIR/luanti
-3. Select **Browse Build...** and select DIR/luanti-build
+2. Select **Browse Source...** and select DIR/minenti
+3. Select **Browse Build...** and select DIR/minenti-build
 4. Select **Configure**
 5. Choose the right visual Studio version and target platform. It has to match the version of the installed dependencies
 6. Choose **Specify toolchain file for cross-compiling**
@@ -45,7 +62,7 @@ Use `--triplet` to specify the target triplet, e.g. `x64-windows` or `x86-window
 11. If there are any errors, solve them and hit **Configure**
 12. Click **Generate**
 13. Click **Open Project**
-14. Compile Luanti inside Visual studio.
+14. Compile Minenti inside Visual Studio.
 
 ### b) Using the vcpkg toolchain and the commandline
 
