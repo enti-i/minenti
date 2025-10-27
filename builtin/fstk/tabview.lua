@@ -173,7 +173,7 @@ local function get_formspec(self)
 
 	local formspec = (prepend or "")
 
-	formspec = build_minenti_theme(self, formspec, orig_tsize, tab_header_size, content)
+
 
 	if self.end_button then
 		formspec = formspec ..
