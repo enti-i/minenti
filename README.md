@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="textures/base/pack/logo.png" width="32%">
+    <img src="https://image.jimcdn.com/app/cms/image/transf/none/path/s66f909ec2da79914/image/ib50a55eddb4cebfc/version/1742070355/image.jpg" width="32%">
     <h1>Luanti (formerly Minetest)</h1>
     <img src="https://github.com/luanti-org/luanti/workflows/build/badge.svg" alt="Build Status">
     <a href="https://hosted.weblate.org/engage/minetest/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/minetest/-/svg-badge.svg" alt="Translation status"></a>
