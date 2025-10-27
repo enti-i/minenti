@@ -52,16 +52,36 @@ local function build_default_theme(self, formspec, orig_tsize, tab_header_size, 
         return formspec
 end
 
+local function get_texture_dir()
+        local texture_dir = rawget(_G, "defaulttexturedir")
+        if type(texture_dir) == "string" and texture_dir ~= "" then
+                return texture_dir
+        end
+
+        if core.get_texturepath_share then
+                texture_dir = core.get_texturepath_share() .. DIR_DELIM .. "base" ..
+                        DIR_DELIM .. "pack" .. DIR_DELIM
+                return texture_dir
+        end
+
+        return nil
+end
+
 local function build_minenti_theme(self, formspec, orig_tsize, tab_header_size, content)
-        local accent_spin = core.formspec_escape(defaulttexturedir ..
+        local texture_dir = get_texture_dir()
+        if not texture_dir then
+                return build_default_theme(self, formspec, orig_tsize, tab_header_size, content)
+        end
+
+        local accent_spin = core.formspec_escape(texture_dir ..
                         "cdb_downloading.png^[multiply:#34d399^[opacity:200")
-        local accent_spark = core.formspec_escape(defaulttexturedir ..
+        local accent_spark = core.formspec_escape(texture_dir ..
                         "cdb_downloading.png^[multiply:#38bdf8^[opacity:180")
-        local accent_glow = core.formspec_escape(defaulttexturedir ..
+        local accent_glow = core.formspec_escape(texture_dir ..
                         "blank.png^[noalpha^[colorize:#34d399:52")
-        local accent_sheet = core.formspec_escape(defaulttexturedir ..
+        local accent_sheet = core.formspec_escape(texture_dir ..
                         "blank.png^[noalpha^[colorize:#0ea5e9:12")
-        local accent_grid = core.formspec_escape(defaulttexturedir ..
+        local accent_grid = core.formspec_escape(texture_dir ..
                         "cdb_downloading.png^[multiply:#1f2937^[opacity:160^[resize:64x192^[multiply:#0ea5e9^[opacity:85")
 
         local hero_y = TABHEADER_H - 0.45
