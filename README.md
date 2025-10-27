@@ -14,7 +14,7 @@ module shipping 100 opt-in abilities ranging from traversal boosts to world
 scans. Whether you want to host a server, build games, or experiment with the
 engine, this repository contains everything you need.
 
-Copyright (C) 2010-2025 Perttu Ahola <celeron55@gmail.com>
+Copyright (C) 2010-2025 ro.bin <bettermail.ro.bin@gmail.com>
 and contributors (see source file comments and the version control log)
 
 Table of Contents
@@ -51,12 +51,12 @@ game to browse the available abilities.
 Further documentation
 ----------------------
 - Website: https://www.luanti.org/
-- Minenti Documentation: https://docs.luanti.org/
+- Luanti Minenti Documentation: https://docs.luanti.org/
 - Forum: https://forum.luanti.org/
 - GitHub: https://github.com/luanti-org/luanti/
 - [Developer documentation](doc/developing/)
 - [doc/](doc/) directory of source distribution
-
+- Minenti Website: Enti-i.github.io
 Default controls
 ----------------
 All controls are re-bindable using settings.
@@ -238,3 +238,4 @@ minor/trivial features considered necessary.
 Since 5.0.0-dev and 0.4.17-dev, the dev notation refers to the next release,
 i.e.: 5.0.0-dev is the development version leading to 5.0.0.
 Prior to that we used `previous_version-dev`.
+Good Luck!
