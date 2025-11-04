@@ -28,6 +28,18 @@ minenti_features = {
 
 local feature_id = 1
 
+local function shallow_copy(tbl)
+    local result = {}
+    for k, v in pairs(tbl or {}) do
+        if type(v) == "table" then
+            result[k] = shallow_copy(v)
+        else
+            result[k] = v
+        end
+    end
+    return result
+end
+
 local function register_feature(spec)
     spec.id = feature_id
     minenti_features.registry[feature_id] = spec
@@ -158,6 +170,46 @@ local function give_item_feature(label, description, itemstring)
         minetest.chat_send_player(name, description .. " (" .. itemstring .. ")")
         return true, label
     end
+end
+
+local function spawn_neon_swirl(player, duration)
+    local id = minetest.add_particlespawner({
+        amount = 96,
+        time = duration,
+        attached = player,
+        minpos = {x = -0.4, y = -0.2, z = -0.4},
+        maxpos = {x = 0.4, y = 1.2, z = 0.4},
+        minvel = {x = -0.2, y = -0.1, z = -0.2},
+        maxvel = {x = 0.2, y = 0.6, z = 0.2},
+        minacc = {x = 0, y = 0.2, z = 0},
+        maxacc = {x = 0, y = 0.6, z = 0},
+        minexptime = 0.4,
+        maxexptime = 1.2,
+        minsize = 0.8,
+        maxsize = 2.2,
+        glow = 12,
+        texture = "default_mese_crystal_fragment.png^[colorize:#39ff14:210",
+    })
+    return id
+end
+
+local function is_open_space(pos)
+    local node = minetest.get_node_or_nil(pos)
+    if not node then
+        return false
+    end
+    local def = minetest.registered_nodes[node.name]
+    return def and def.walkable == false
+end
+
+local function has_solid_ground(pos)
+    local below = {x = pos.x, y = pos.y - 1, z = pos.z}
+    local node = minetest.get_node_or_nil(below)
+    if not node then
+        return false
+    end
+    local def = minetest.registered_nodes[node.name]
+    return def and def.walkable ~= false
 end
 
 local function info_feature(label, description, generator)
@@ -566,9 +618,130 @@ for index, payload in ipairs(delayed_payloads) do
     })
 end
 
+register_feature({
+    label = "ZickZack-Lauf",
+    name = "zickzack_dash",
+    description = "Sprintet 8 Sekunden lang ultraschnell mit neon-grünem Schweif",
+    activate = function(player)
+        player = ensure_player(player)
+        if not player then
+            return false, "Der Spieler konnte nicht gefunden werden."
+        end
+        local name = player:get_player_name()
+        local original = player:get_physics_override()
+        local duration = 8
+        local overrides = {
+            speed = (original.speed or 1) * 2.4,
+            jump = original.jump,
+            gravity = original.gravity,
+        }
+        player:set_physics_override(overrides)
+        spawn_neon_swirl(player, duration)
+        minetest.sound_play("default_dig_metal", {to_player = name, gain = 0.4}, true)
+        reset_physics_after(name, duration, original)
+        return true, "ZickZack-Lauf aktiviert!"
+    end,
+})
+
+register_feature({
+    label = "Neon-Blitz",
+    name = "zickzack_blink",
+    description = "Teleportiert dich einige Meter nach vorn, wenn genug Platz frei ist",
+    activate = function(player)
+        player = ensure_player(player)
+        if not player then
+            return false, "Der Spieler konnte nicht gefunden werden."
+        end
+        local name = player:get_player_name()
+        local pos = player:get_pos()
+        local dir = player:get_look_dir()
+        if vector.length(dir) == 0 then
+            return false, "Keine Blickrichtung erkannt."
+        end
+        dir = vector.normalize(dir)
+        local destination
+        for distance = 6, 2, -1 do
+            local trial = vector.round(vector.add(pos, vector.multiply(dir, distance)))
+            local upper = {x = trial.x, y = trial.y + 1, z = trial.z}
+            if is_open_space(trial) and is_open_space(upper) and has_solid_ground(trial) then
+                destination = {x = trial.x + 0.5, y = trial.y, z = trial.z + 0.5}
+                break
+            end
+        end
+        if not destination then
+            return false, "Kein freier Platz in Blickrichtung gefunden."
+        end
+        minetest.add_particlespawner({
+            amount = 60,
+            time = 0.2,
+            minpos = {x = pos.x - 0.2, y = pos.y, z = pos.z - 0.2},
+            maxpos = {x = pos.x + 0.2, y = pos.y + 1.5, z = pos.z + 0.2},
+            minvel = {x = -0.3, y = 0.1, z = -0.3},
+            maxvel = {x = 0.3, y = 1.2, z = 0.3},
+            minexptime = 0.2,
+            maxexptime = 0.6,
+            minsize = 1.2,
+            maxsize = 2.6,
+            glow = 13,
+            texture = "default_mese_crystal_fragment.png^[colorize:#39ff14:255",
+        })
+        minetest.sound_play("default_glass_footstep", {to_player = name, gain = 0.6}, true)
+        player:set_pos(destination)
+        minetest.add_particlespawner({
+            amount = 80,
+            time = 0.4,
+            minpos = {x = destination.x - 0.2, y = destination.y, z = destination.z - 0.2},
+            maxpos = {x = destination.x + 0.2, y = destination.y + 1.5, z = destination.z + 0.2},
+            minvel = {x = -0.2, y = 0.1, z = -0.2},
+            maxvel = {x = 0.2, y = 1.0, z = 0.2},
+            minexptime = 0.3,
+            maxexptime = 0.8,
+            minsize = 1.0,
+            maxsize = 2.0,
+            glow = 14,
+            texture = "default_mese_crystal_fragment.png^[colorize:#39ff14:240",
+        })
+        return true, "Neon-Blitz teleportiert dich vorwärts!"
+    end,
+})
+
+register_feature({
+    label = "ZickZack-Schild",
+    name = "zickzack_shield",
+    description = "Verleiht dir 12 Sekunden lang zusätzliche Lebensenergie und Neonpanzer",
+    activate = function(player)
+        player = ensure_player(player)
+        if not player then
+            return false, "Der Spieler konnte nicht gefunden werden."
+        end
+        local name = player:get_player_name()
+        local props = player:get_properties()
+        local duration = 12
+        local base_hp = player:get_hp() or 20
+        player:set_hp(math.min(props.hp_max or 20, base_hp + 6))
+        spawn_neon_swirl(player, duration)
+        local original_glow = props.glow or 0
+        local updated = shallow_copy(props)
+        updated.glow = math.max(original_glow, 10)
+        player:set_properties(updated)
+        minetest.chat_send_player(name, "Ein vibrierender Neon-Schild umgibt dich!")
+        minetest.sound_play("default_place_node_hard", {to_player = name, gain = 0.4}, true)
+        minetest.after(duration, function()
+            local current = minetest.get_player_by_name(name)
+            if current then
+                local revert = shallow_copy(current:get_properties())
+                revert.glow = original_glow
+                current:set_properties(revert)
+                minetest.chat_send_player(name, "Der Neon-Schild flackert und verschwindet wieder.")
+            end
+        end)
+        return true, "ZickZack-Schild gestärkt"
+    end,
+})
+
 minetest.register_chatcommand("minenti_feature", {
     params = "<id>",
-    description = "Aktiviere eine der 100 Minenti-Features",
+    description = "Aktiviere eine der ZickZack-Features",
     func = function(name, param)
         local id = tonumber(param)
         if not id then
@@ -603,7 +776,7 @@ minetest.register_chatcommand("minenti_features", {
         end
         local start_index = (page - 1) * per_page + 1
         local end_index = math.min(page * per_page, total)
-        local lines = {"Minenti Features (Seite " .. page .. "/" .. pages .. "):"}
+        local lines = {"ZickZack Features (Seite " .. page .. "/" .. pages .. "):"}
         for i = start_index, end_index do
             local spec = minenti_features.registry[i]
             lines[#lines + 1] = string.format("%3d: %s - %s", i, spec.label, spec.description)
