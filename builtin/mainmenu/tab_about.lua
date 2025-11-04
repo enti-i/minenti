@@ -46,10 +46,10 @@ return {
 
 	cbf_formspec = function(tabview, name, tabdata)
 		local version = core.get_version()
-		local brand = table.concat({
-			"<style size=28 font=mono color=#34d399>Minenti</style>",
-			"<style color=#94a3b8>Creative worlds. Endless possibilities.</style>",
-		}, "\n")
+                local brand = table.concat({
+                        "<style size=28 font=mono color=#39ff14>ZickZack Client</style>",
+                        "<style color=#9dffbe>Neonwelten. Schnelle Sprünge. Volle Kontrolle.</style>",
+                }, "\n")
 
 		local hypertext = {
 			"<tag name=heading color=#ff0>",
@@ -90,7 +90,7 @@ return {
 			"style[label_button;border=false]" ..
 			"button[0.1,3.4;5.3,0.5;label_button;" ..
 			core.formspec_escape(version.project .. " " .. version.string) .. "]" ..
-			"button_url[1.5,4.1;2.5,0.8;homepage;minenti.org;https://www.minenti.org/]" ..
+                        "button_url[1.5,4.1;2.5,0.8;homepage;zickzack.client;https://www.zickzack-client.example/]" ..
 			"hypertext[5.5,0.25;9.75,6.6;credits;" .. core.formspec_escape(hypertext) .. "]"
 
 		local active_renderer_info = fgettext("Active renderer:") .. "\n" ..

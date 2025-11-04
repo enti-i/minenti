@@ -83,12 +83,12 @@ local function get_formspec(self)
 
 	local formspec = (prepend or "")
 
-	local accent_spin = core.formspec_escape(defaulttexturedir ..
-		"cdb_downloading.png^[multiply:#34d399^[opacity:200")
-	local accent_glow = core.formspec_escape(defaulttexturedir ..
-		"blank.png^[noalpha^[colorize:#34d399:52")
-	local accent_sheet = core.formspec_escape(defaulttexturedir ..
-		"blank.png^[noalpha^[colorize:#0ea5e9:12")
+        local accent_spin = core.formspec_escape(defaulttexturedir ..
+                "cdb_downloading.png^[multiply:#39ff14^[opacity:210")
+        local accent_glow = core.formspec_escape(defaulttexturedir ..
+                "blank.png^[noalpha^[colorize:#0b441c:120")
+        local accent_sheet = core.formspec_escape(defaulttexturedir ..
+                "blank.png^[noalpha^[colorize:#0f3416:80")
 
 	local hero_y = TABHEADER_H - 0.45
 	local hero_height = math.min(3.2, orig_tsize.height + 0.35)
@@ -98,27 +98,27 @@ local function get_formspec(self)
 	local swirl_x = orig_tsize.width - swirl_size + 0.35
 	local swirl_y = hero_y - 0.4
 
-	local tagline_primary = fgettext_ne("Minenti – Creativity in every block")
-	local tagline_secondary = fgettext_ne("Build, explore, and share your own adventures.")
+        local tagline_primary = fgettext_ne("ZickZack Client – Neonpräzision für deine Welten")
+        local tagline_secondary = fgettext_ne("Stürze dich in grelle Abenteuer mit blitzschnellen Werkzeugen.")
 	local tagline_markup = table.concat({
 		"<global font=bold size=24 color=#F8FAFC>", tagline_primary, "</global>",
 		"<newline/>",
 		"<global size=15 color=#94A3B8>", tagline_secondary, "</global>"
 	})
 
-	formspec = formspec .. "bgcolor[#0f172aff;fullscreen;#050a15ff]"
-	formspec = formspec .. "style_type[label;textcolor=#E2E8F0]"
-	formspec = formspec .. "style_type[checkbox;textcolor=#E2E8F0]"
-	formspec = formspec .. "style_type[textlist;textcolor=#E2E8F0]"
-	formspec = formspec .. "style_type[textlist:selected;textcolor=#0f172a;bgcolor=#34d399]"
-	formspec = formspec .. "style_type[button;bordercolor=#34d399;textcolor=#0f172a;bgcolor=#34d399]"
-	formspec = formspec .. "style_type[button:hovered;bgcolor=#22c55e;textcolor=#0f172a]"
-	formspec = formspec .. "style_type[button:pressed;bgcolor=#0ea5e9;textcolor=#0f172a]"
-	formspec = formspec .. "style_type[field;bordercolor=#34d399]"
-	formspec = formspec .. "style_type[field;textcolor=#0f172a]"
-	formspec = formspec .. "listcolors[#cbd5f5;#111827;#34d399;#0f172a;#34d399]"
+        formspec = formspec .. "bgcolor[#050c06ff;fullscreen;#020403ff]"
+        formspec = formspec .. "style_type[label;textcolor=#c8ffdb]"
+        formspec = formspec .. "style_type[checkbox;textcolor=#c8ffdb]"
+        formspec = formspec .. "style_type[textlist;textcolor=#c8ffdb]"
+        formspec = formspec .. "style_type[textlist:selected;textcolor=#021107;bgcolor=#39ff14]"
+        formspec = formspec .. "style_type[button;bordercolor=#39ff14;textcolor=#021107;bgcolor=#0b441c]"
+        formspec = formspec .. "style_type[button:hovered;bgcolor=#12ff72;textcolor=#021107]"
+        formspec = formspec .. "style_type[button:pressed;bgcolor=#0bff59;textcolor=#021107]"
+        formspec = formspec .. "style_type[field;bordercolor=#39ff14]"
+        formspec = formspec .. "style_type[field;textcolor=#021107]"
+        formspec = formspec .. "listcolors[#173a1f;#020d07;#39ff14;#021107;#39ff14]"
 
-	formspec = formspec .. ("box[%f,%f;%f,%f;#111827E6]"):format(hero_x, hero_y, hero_width, hero_height)
+        formspec = formspec .. ("box[%f,%f;%f,%f;#02150dE6]"):format(hero_x, hero_y, hero_width, hero_height)
 	formspec = formspec .. ("image[%f,%f;%f,%f;%s]"):format(hero_x, hero_y, hero_width, hero_height, accent_sheet)
 	formspec = formspec .. ("image[%f,%f;%f,%f;%s]"):format(swirl_x, swirl_y, swirl_size, swirl_size, accent_glow)
 	formspec = formspec .. ("animated_image[%f,%f;%f,%f;minenti_swirl;%s;3;200;0]"):format(
